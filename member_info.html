@@ -16,24 +16,53 @@
       <div class="list-container" id="member-list">
         <!-- 구성원 목록이 여기에 표시됩니다 -->
       </div>
+
+      <div class="button-container">
+        <button type="button" onclick="openAddMemberForm()">
+          새 구성원 추가
+        </button>
+      </div>
     </div>
 
+    <!-- 수정 모달 -->
     <div id="edit-form" class="modal">
       <div class="modal-content">
         <span class="close" onclick="closeEditForm()">&times;</span>
-        <h4>수정</h4>
+        <h2>정보 수정하기</h2>
         <form id="edit-member-form">
           <input type="hidden" id="edit-index" />
           <label for="edit-name">이름:</label>
           <input type="text" id="edit-name" required /><br />
           <label for="edit-dept">부서:</label>
           <input type="text" id="edit-dept" required /><br />
+          <label for="edit-position">직급:</label>
+          <input type="text" id="edit-position" required /><br />
           <label for="edit-birthdate">생년월일:</label>
           <input type="date" id="edit-birthdate" required /><br />
           <label for="edit-join-date">합류 날짜:</label>
           <input type="date" id="edit-join-date" required /><br />
           <button type="button" onclick="saveMemberInfo()">저장하기</button>
-          <button type="button" onclick="saveMemberInfo()">삭제하기</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- 추가 모달 -->
+    <div id="add-form" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeAddForm()">&times;</span>
+        <h2>새 구성원 추가하기</h2>
+        <form id="add-member-form">
+          <label for="add-name">이름:</label>
+          <input type="text" id="add-name" required /><br />
+          <label for="add-dept">부서:</label>
+          <input type="text" id="add-dept" required /><br />
+          <label for="add-position">직급:</label>
+          <input type="text" id="add-position" required /><br />
+          <label for="add-birthdate">생년월일:</label>
+          <input type="date" id="add-birthdate" required /><br />
+          <label for="add-join-date">합류 날짜:</label>
+          <input type="date" id="add-join-date" required /><br />
+          <button type="button" onclick="addMember()">추가하기</button>
         </form>
       </div>
     </div>
@@ -42,38 +71,39 @@
       // 임시 구성원 데이터
       const members = [
         {
+          emp_no: 1,
           name: "홍길동",
           dept_name: "개발부서",
+          position: "팀장",
           birthdate: "2001-03-01",
           join_date: "2021-01-01",
         },
         {
+          emp_no: 2,
           name: "강감찬",
           dept_name: "개발부서",
+          position: "사원",
           birthdate: "2001-03-01",
           join_date: "2021-01-01",
         },
         {
-          name: "박지성",
+          emp_no: 3,
+          name: "홍길동",
           dept_name: "개발부서",
+          position: "팀장",
           birthdate: "2001-03-01",
           join_date: "2021-01-01",
         },
         {
-          name: "이병헌",
+          emp_no: 4,
+          name: "강감찬",
           dept_name: "개발부서",
-          birthdate: "2001-03-01",
-          join_date: "2021-01-01",
-        },
-        {
-          name: "이병헌",
-          dept_name: "개발부서",
+          position: "사원",
           birthdate: "2001-03-01",
           join_date: "2021-01-01",
         },
       ];
 
-      // 구성원 목록 표시 함수
       function displayMembers(filteredMembers) {
         const memberList = document.getElementById("member-list");
         memberList.innerHTML = "";
@@ -81,29 +111,32 @@
           const memberItem = document.createElement("div");
           memberItem.className = "member-item";
           memberItem.innerHTML = `
-                <div class="member-header">
-                    <h3>${member.name}</h3>
-                    <div class="menu">
-                        <span onclick="toggleMenu(${index})">...</span>
-                        <div class="dropdown-menu" id="menu-${index}">
-                            <button onclick="editMember(${index})">수정</button>
+                    <div class="member-header">
+                        <h3>${member.name}</h3>
+                        <div class="menu">
+                            <span onclick="toggleMenu(${index})">...</span>
+                            <div class="dropdown-menu" id="menu-${index}">
+                                <button onclick="editMember(${index})">수정</button>
+                                <button onclick="deleteMember(${index})">삭제</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <p>소속: <a href="department_info.html?dept=${encodeURIComponent(
-                  member.dept_name
-                )}">${member.dept_name}</a></p>
-                <p>생년월일: ${member.birthdate}</p>
-                <p>합류날짜: ${member.join_date}</p>
-                <button type="button" onclick="location.href='evaluation.html?emp-no=${
-                  member.emp_no
-                }'">인사 평가</button>
-            `;
+                    <p>소속: <a href="department_info.html?dept=${encodeURIComponent(
+                      member.dept_name
+                    )}">${member.dept_name}</a></p>
+                    <p>직급: ${member.position}</p>
+                    <p>생년월일: ${member.birthdate}</p>
+                    <p>합류날짜: ${member.join_date}</p>
+                    <!-- <div class="center">
+                        <button type="button" onclick="location.href='evaluation.html?emp-no=${
+                          member.emp_no
+                        }'">인사 평가 정보 확인</button>
+                    </div> -->
+                `;
           memberList.appendChild(memberItem);
         });
       }
 
-      // 구성원 검색 함수
       function searchMember() {
         const searchTerm = document
           .getElementById("search")
@@ -114,7 +147,6 @@
         displayMembers(filteredMembers);
       }
 
-      // 페이지 로드 시 모든 구성원 표시
       window.onload = () => {
         displayMembers(members);
       };
@@ -131,6 +163,7 @@
         document.getElementById("edit-index").value = index;
         document.getElementById("edit-name").value = member.name;
         document.getElementById("edit-dept").value = member.dept_name;
+        document.getElementById("edit-position").value = member.position;
         document.getElementById("edit-birthdate").value = member.birthdate;
         document.getElementById("edit-join-date").value = member.join_date;
         document.getElementById("edit-form").style.display = "block";
@@ -141,6 +174,8 @@
         const index = document.getElementById("edit-index").value;
         members[index].name = document.getElementById("edit-name").value;
         members[index].dept_name = document.getElementById("edit-dept").value;
+        members[index].position =
+          document.getElementById("edit-position").value;
         members[index].birthdate =
           document.getElementById("edit-birthdate").value;
         members[index].join_date =
@@ -152,6 +187,44 @@
       // 정보 수정 폼 닫기 함수
       function closeEditForm() {
         document.getElementById("edit-form").style.display = "none";
+      }
+
+      // 새 구성원 추가 폼 표시 함수
+      function openAddMemberForm() {
+        document.getElementById("add-form").style.display = "block";
+      }
+
+      // 새 구성원 추가 함수
+      function addMember() {
+        const name = document.getElementById("add-name").value;
+        const dept = document.getElementById("add-dept").value;
+        const position = document.getElementById("add-position").value;
+        const birthdate = document.getElementById("add-birthdate").value;
+        const joinDate = document.getElementById("add-join-date").value;
+        const newMember = {
+          emp_no: members.length + 1, // 임시 emp_no 생성
+          name,
+          dept_name: dept,
+          position,
+          birthdate,
+          join_date: joinDate,
+        };
+        members.push(newMember);
+        document.getElementById("add-form").style.display = "none";
+        displayMembers(members);
+      }
+
+      // 새 구성원 추가 폼 닫기 함수
+      function closeAddForm() {
+        document.getElementById("add-form").style.display = "none";
+      }
+
+      // 구성원 삭제 함수
+      function deleteMember(index) {
+        if (confirm("정말로 이 구성원을 삭제하시겠습니까?")) {
+          members.splice(index, 1); // 구성원 데이터에서 삭제
+          displayMembers(members); // 목록 업데이트
+        }
       }
     </script>
   </body>
