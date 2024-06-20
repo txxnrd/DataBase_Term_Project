@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>인사 평가</title>
+    <link rel="stylesheet" href="evaluation_styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h2>인사 평가 정보</h2>
+      <div id="evaluation-info">
+        <!-- 평가 정보가 여기에 표시됩니다 -->
+      </div>
+    </div>
+    <script>
+      // 임시 평가 데이터
+      const evaluations = {
+        1: [
+          {
+            year: 2023,
+            achievement: "우수",
+            leadership: "좋음",
+            teamwork: "매우 좋음",
+            problem_solving: "우수",
+            communication: "좋음",
+          },
+          {
+            year: 2023,
+            achievement: "우수",
+            leadership: "좋음",
+            teamwork: "매우 좋음",
+            problem_solving: "우수",
+            communication: "좋음",
+          },
+        ],
+        2: [
+          {
+            year: 2024,
+            achievement: "보통",
+            leadership: "좋음",
+            teamwork: "좋음",
+            problem_solving: "보통",
+            communication: "보통",
+          },
+        ],
+      };
+
+      function getEvaluations(empNo) {
+        return evaluations[empNo] || [];
+      }
+
+      function displayEvaluations(empNo) {
+        const evaluationInfo = document.getElementById("evaluation-info");
+        const empEvaluations = getEvaluations(empNo);
+
+        // If there are no evaluations for the employee, show a message
+        if (empEvaluations.length === 0) {
+          evaluationInfo.innerHTML = "<p>평가 정보가 없습니다.</p>";
+          return;
+        }
+
+        empEvaluations.forEach((evaluation) => {
+          const evaluationItem = document.createElement("div");
+          evaluationItem.className = "evaluation-item";
+          evaluationItem.innerHTML = `
+                    <h3>${evaluation.year}년</h3>
+                    <p>업적: ${evaluation.achievement}</p>
+                    <p>리더십: ${evaluation.leadership}</p>
+                    <p>팀워크: ${evaluation.teamwork}</p>
+                    <p>문제 해결: ${evaluation.problem_solving}</p>
+                    <p>의사소통: ${evaluation.communication}</p>
+                `;
+          evaluationInfo.appendChild(evaluationItem);
+        });
+      }
+
+      window.onload = () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const empNo = urlParams.get("emp-no");
+        displayEvaluations(empNo);
+      };
+    </script>
+  </body>
+</html>

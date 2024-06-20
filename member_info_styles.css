@@ -17,6 +17,7 @@ body {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  height: 90%; /* 높이 제한을 설정하여 스크롤 가능하도록 수정 */
 }
 
 h2 {

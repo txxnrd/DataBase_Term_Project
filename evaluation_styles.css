@@ -1,0 +1,55 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  text-align: center;
+  width: 80%;
+  max-width: 800px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  max-height: 90%; /* 스크롤을 추가하기 위해 높이를 제한 */
+}
+
+h2 {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+#evaluation-info {
+  text-align: left;
+}
+
+.evaluation-item {
+  background-color: #f9f9f9;
+  padding: 15px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.evaluation-item h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.evaluation-item p {
+  margin: 5px 0;
+  color: #555;
+}
+
+/* 추가 스타일 */
+.evaluation-item p strong {
+  font-weight: bold;
+  color: #000;
+}
