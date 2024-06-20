@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>부서 정보</title>
+    <link rel="stylesheet" href="department_info_styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h2>부서 정보</h2>
+      <div id="department-details">
+        <!-- 부서 정보가 여기에 표시됩니다 -->
+      </div>
+    </div>
+
+    <script>
+      // 임시 부서 데이터
+      const departments = {
+        개발부서: {
+          dept_number: "001",
+          dept_head: "김철수",
+          dept_established_date: "2010-05-15",
+          dept_location: "서울",
+        },
+        인사부서: {
+          dept_number: "002",
+          dept_head: "박영희",
+          dept_established_date: "2011-06-20",
+          dept_location: "부산",
+        },
+      };
+
+      // URL 파라미터에서 부서명 가져오기
+      const urlParams = new URLSearchParams(window.location.search);
+      const deptName = urlParams.get("dept");
+
+      // 부서 정보 표시 함수
+      function displayDepartmentInfo(department) {
+        const departmentDetails = document.getElementById("department-details");
+        if (department) {
+          departmentDetails.innerHTML = `
+                    <h3>${deptName}</h3>
+                    <p>부서 번호: ${department.dept_number}</p>
+                    <p>부서장: ${department.dept_head}</p>
+                    <p>설립일: ${department.dept_established_date}</p>
+                    <p>위치: ${department.dept_location}</p>
+                `;
+        } else {
+          departmentDetails.innerHTML = "<p>부서 정보를 찾을 수 없습니다.</p>";
+        }
+      }
+
+      // 페이지 로드 시 부서 정보 표시
+      window.onload = () => {
+        if (deptName && departments[deptName]) {
+          displayDepartmentInfo(departments[deptName]);
+        } else {
+          displayDepartmentInfo(null);
+        }
+      };
+    </script>
+  </body>
+</html>

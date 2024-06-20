@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>구성원 정보</title>
+    <link rel="stylesheet" href="member_info_styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h2>구성원 정보</h2>
+      <div class="search-container">
+        <input type="text" id="search" placeholder="구성원 검색..." />
+        <button onclick="searchMember()">검색</button>
+      </div>
+      <div class="list-container" id="member-list">
+        <!-- 구성원 목록이 여기에 표시됩니다 -->
+      </div>
+    </div>
+
+    <script>
+      // 임시 구성원 데이터
+      const members = [
+        {
+          name: "홍길동",
+          dept_name: "개발부서",
+          birthdate: "2001-03-01",
+          join_date: "2021-01-01",
+        },
+        {
+          name: "강감찬",
+          dept_name: "개발부서",
+          birthdate: "2001-03-01",
+          join_date: "2021-01-01",
+        },
+        {
+          name: "박지성",
+          dept_name: "개발부서",
+          birthdate: "2001-03-01",
+          join_date: "2021-01-01",
+        },
+        {
+          name: "이병헌",
+          dept_name: "개발부서",
+          birthdate: "2001-03-01",
+          join_date: "2021-01-01",
+        },
+      ];
+
+      // 구성원 목록 표시 함수
+      function displayMembers(filteredMembers) {
+        const memberList = document.getElementById("member-list");
+        memberList.innerHTML = "";
+        filteredMembers.forEach((member) => {
+          const memberItem = document.createElement("div");
+          memberItem.className = "member-item";
+          memberItem.innerHTML = `
+                    <h3>${member.name}</h3>
+                    <p>소속: <a href="department_info.html?dept=${encodeURIComponent(
+                      member.dept_name
+                    )}">${member.dept_name}</a></p>
+                    <p>생년월일: ${member.birthdate}</p>
+                    <p>합류날짜: ${member.join_date}</p>
+                `;
+          memberList.appendChild(memberItem);
+        });
+      }
+
+      // 구성원 검색 함수
+      function searchMember() {
+        const searchTerm = document
+          .getElementById("search")
+          .value.toLowerCase();
+        const filteredMembers = members.filter((member) =>
+          member.name.toLowerCase().includes(searchTerm)
+        );
+        displayMembers(filteredMembers);
+      }
+
+      // 페이지 로드 시 모든 구성원 표시
+      window.onload = () => {
+        displayMembers(members);
+      };
+    </script>
+  </body>
+</html>
