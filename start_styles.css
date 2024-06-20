@@ -12,21 +12,68 @@ body {
   text-align: center;
 }
 
-h1 {
-  font-size: 2.5em;
-  margin: 0;
-}
-
-h2 {
-  font-size: 2em;
-  margin: 0;
-  margin-bottom: 20px;
-  margin-top: 20px;
-}
-
 h40 {
   font-size: 5em;
   margin: 0;
+  animation: fadeIn 2s ease-in;
+}
+
+.animation-container {
+  margin-top: 20px;
+  position: relative;
+  height: 50px; /* 필요에 따라 조정 */
+}
+
+.next {
+  font-size: 2.5em;
+  font-weight: bold;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  animation: slideIn 3s forwards 2s, colorChange 5s infinite;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-50%) translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes colorChange {
+  0% {
+    color: #ff0000;
+  }
+  20% {
+    color: #ffa500;
+  }
+  40% {
+    color: #ffff00;
+  }
+  60% {
+    color: #008000;
+  }
+  80% {
+    color: #0000ff;
+  }
+  100% {
+    color: #4b0082;
+  }
 }
 
 .button-container {
@@ -44,8 +91,6 @@ h40 {
   text-decoration: none;
   border-radius: 8px;
   font-size: 1.3em;
-  margin-left: 100px;
-  margin-right: 100px;
   transition: background-color 0.3s ease;
 }
 

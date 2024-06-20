@@ -18,6 +18,26 @@
       </div>
     </div>
 
+    <div id="edit-form" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeEditForm()">&times;</span>
+        <h4>수정</h4>
+        <form id="edit-member-form">
+          <input type="hidden" id="edit-index" />
+          <label for="edit-name">이름:</label>
+          <input type="text" id="edit-name" required /><br />
+          <label for="edit-dept">부서:</label>
+          <input type="text" id="edit-dept" required /><br />
+          <label for="edit-birthdate">생년월일:</label>
+          <input type="date" id="edit-birthdate" required /><br />
+          <label for="edit-join-date">합류 날짜:</label>
+          <input type="date" id="edit-join-date" required /><br />
+          <button type="button" onclick="saveMemberInfo()">저장하기</button>
+          <button type="button" onclick="saveMemberInfo()">삭제하기</button>
+        </form>
+      </div>
+    </div>
+
     <script>
       // 임시 구성원 데이터
       const members = [
@@ -45,23 +65,40 @@
           birthdate: "2001-03-01",
           join_date: "2021-01-01",
         },
+        {
+          name: "이병헌",
+          dept_name: "개발부서",
+          birthdate: "2001-03-01",
+          join_date: "2021-01-01",
+        },
       ];
 
       // 구성원 목록 표시 함수
       function displayMembers(filteredMembers) {
         const memberList = document.getElementById("member-list");
         memberList.innerHTML = "";
-        filteredMembers.forEach((member) => {
+        filteredMembers.forEach((member, index) => {
           const memberItem = document.createElement("div");
           memberItem.className = "member-item";
           memberItem.innerHTML = `
+                <div class="member-header">
                     <h3>${member.name}</h3>
-                    <p>소속: <a href="department_info.html?dept=${encodeURIComponent(
-                      member.dept_name
-                    )}">${member.dept_name}</a></p>
-                    <p>생년월일: ${member.birthdate}</p>
-                    <p>합류날짜: ${member.join_date}</p>
-                `;
+                    <div class="menu">
+                        <span onclick="toggleMenu(${index})">...</span>
+                        <div class="dropdown-menu" id="menu-${index}">
+                            <button onclick="editMember(${index})">수정</button>
+                        </div>
+                    </div>
+                </div>
+                <p>소속: <a href="department_info.html?dept=${encodeURIComponent(
+                  member.dept_name
+                )}">${member.dept_name}</a></p>
+                <p>생년월일: ${member.birthdate}</p>
+                <p>합류날짜: ${member.join_date}</p>
+                <button onclick="location.href='evaluation.html?emp-no=${
+                  member.emp_no
+                }'">인사 평가</button>
+            `;
           memberList.appendChild(memberItem);
         });
       }
@@ -81,6 +118,41 @@
       window.onload = () => {
         displayMembers(members);
       };
+
+      // 메뉴 표시/숨김 토글 함수
+      function toggleMenu(index) {
+        const menu = document.getElementById(`menu-${index}`);
+        menu.style.display = menu.style.display === "block" ? "none" : "block";
+      }
+
+      // 구성원 정보 수정 폼 표시 함수
+      function editMember(index) {
+        const member = members[index];
+        document.getElementById("edit-index").value = index;
+        document.getElementById("edit-name").value = member.name;
+        document.getElementById("edit-dept").value = member.dept_name;
+        document.getElementById("edit-birthdate").value = member.birthdate;
+        document.getElementById("edit-join-date").value = member.join_date;
+        document.getElementById("edit-form").style.display = "block";
+      }
+
+      // 구성원 정보 저장 함수
+      function saveMemberInfo() {
+        const index = document.getElementById("edit-index").value;
+        members[index].name = document.getElementById("edit-name").value;
+        members[index].dept_name = document.getElementById("edit-dept").value;
+        members[index].birthdate =
+          document.getElementById("edit-birthdate").value;
+        members[index].join_date =
+          document.getElementById("edit-join-date").value;
+        document.getElementById("edit-form").style.display = "none";
+        displayMembers(members);
+      }
+
+      // 정보 수정 폼 닫기 함수
+      function closeEditForm() {
+        document.getElementById("edit-form").style.display = "none";
+      }
     </script>
   </body>
 </html>
