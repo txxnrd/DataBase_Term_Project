@@ -17,6 +17,18 @@ body {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-height: 90vh; /* 최대 높이를 설정 */
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* 수직 스크롤 활성화 */
+}
+
+.list-container {
+  text-align: left;
+  height: 70%; /* 높이 제한을 설정하여 스크롤 가능하도록 수정 */
+  overflow-y: auto; /* 스크롤바 추가 */
+  margin-bottom: 20px;
+  padding-right: 10px; /* 스크롤바로 인해 내용이 잘리지 않도록 여유 공간 추가 */
 }
 
 h2 {
@@ -50,14 +62,6 @@ h2 {
 
 .search-container button:hover {
   background-color: #2d4373;
-}
-
-.list-container {
-  text-align: left;
-  height: 70%;
-  overflow-y: auto;
-  margin-bottom: 20px;
-  padding-right: 10px;
 }
 
 .evaluation-item {
