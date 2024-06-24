@@ -1,4 +1,5 @@
 # 인사 평가 관리 시스템 README
+![image](https://github.com/txxnrd/database_term_project/assets/106647507/7298c525-0db9-4757-92c4-dc203eca7ab4)
 
 ## 프로젝트 소개
 
