@@ -2,7 +2,7 @@
 // 데이터베이스 연결 설정
 $host = "localhost";
 $db_id = "db2022320094"; // 데이터베이스 사용자 아이디
-$db_password = "nrbsld@korea.ac.kr"; // 데이터베이스 사용자 비밀번호
+$db_password = "secret"; // 데이터베이스 사용자 비밀번호
 $db_name = "db2022320094"; // 데이터베이스 이름
 
 // MySQLi 연결

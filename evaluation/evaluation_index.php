@@ -22,8 +22,7 @@
             <button type="button" onclick="openAddEvaluationForm()">새 평가 추가</button>
         </div>
         <div class="tohome">
-        	<a href="start.php">홈으로</a>
-        </div>
+       
     </div>
 
     <!-- 수정 모달 -->

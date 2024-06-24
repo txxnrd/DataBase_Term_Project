@@ -15,7 +15,6 @@ if ($conn->connect_error) {
 
 // 폼 데이터 받기
 $emp_no = $_POST['emp_no'];
-
 $year = $_POST['year'];
 $achievement = $_POST['achievement'];
 $leadership = $_POST['leadership'];
@@ -23,13 +22,14 @@ $teamwork = $_POST['teamwork'];
 $problem_solving = $_POST['problem_solving'];
 $communication = $_POST['communication'];
 
-// 인사 평가 정보 업데이트
-$sql = "UPDATE Evaluation 
-        SET  year='$year', achievement='$achievement', leadership='$leadership', teamwork='$teamwork', problem_solving='$problem_solving', communication='$communication' 
-        WHERE emp_no='$emp_no' AND year='$year'";
+// 인사 평가 정보 저장
+$sql = "INSERT INTO Evaluation (emp_no, year, achievement, leadership, teamwork, problem_solving, communication) 
+        VALUES ('$emp_no', '$year', '$achievement', '$leadership', '$teamwork', '$problem_solving', '$communication')";
 
 if ($conn->query($sql) === TRUE) {
-    echo "Evaluation record updated successfully";
+    echo "New evaluation record created successfully";
+    header("Location: evaluation_index.php");
+    exit();
 } else {
     echo "Error: " . $sql . "<br>" . $conn->error;
 }

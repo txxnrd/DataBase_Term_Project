@@ -14,22 +14,19 @@ if ($conn->connect_error) {
 }
 
 // 폼 데이터 받기
-$emp_no = $_POST['emp_no'];
+$dept_number = $_POST['dept_number'];
+$dept_name = $_POST['dept_name'];
+$dept_head = $_POST['dept_head'];
+$dept_established_date = $_POST['dept_established_date'];
+$dept_location = $_POST['dept_location'];
 
-$year = $_POST['year'];
-$achievement = $_POST['achievement'];
-$leadership = $_POST['leadership'];
-$teamwork = $_POST['teamwork'];
-$problem_solving = $_POST['problem_solving'];
-$communication = $_POST['communication'];
-
-// 인사 평가 정보 업데이트
-$sql = "UPDATE Evaluation 
-        SET  year='$year', achievement='$achievement', leadership='$leadership', teamwork='$teamwork', problem_solving='$problem_solving', communication='$communication' 
-        WHERE emp_no='$emp_no' AND year='$year'";
+// 부서 정보 업데이트
+$sql = "UPDATE Department
+        SET dept_name='$dept_name', dept_head='$dept_head', dept_established_date='$dept_established_date', dept_location='$dept_location' 
+        WHERE dept_number='$dept_number'";
 
 if ($conn->query($sql) === TRUE) {
-    echo "Evaluation record updated successfully";
+    echo "Department record updated successfully";
 } else {
     echo "Error: " . $sql . "<br>" . $conn->error;
 }

@@ -13,25 +13,17 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// 구성원 정보 가져오기
-$sql = "SELECT * FROM employee";
+// 부서 정보 가져오기
+$sql = "SELECT * FROM Department"; // 부서 정보 테이블 이름으로 변경
 $result = $conn->query($sql);
 
-$members = array();
+$departments = array();
 while ($row = $result->fetch_assoc()) {
-    $emp_no = $row['emp_no'];
-    $sql_phones = "SELECT phone_number FROM Phone WHERE emp_no='$emp_no'";
-    $result_phones = $conn->query($sql_phones);
-    $phones = array();
-    while ($row_phone = $result_phones->fetch_assoc()) {
-        $phones[] = $row_phone['phone_number'];
-    }
-    $row['phones'] = $phones;
-    $members[] = $row;
+    $departments[] = $row;
 }
 
 // JSON 형식으로 데이터 반환
-echo json_encode($members);
+echo json_encode($departments);
 
 // 연결 종료
 $conn->close();

@@ -13,22 +13,18 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// POST 데이터 받기
-$emp_no = $_POST['emp_no'];
-$year = $_POST['year'];
+// 폼 데이터 받기
+$dept_number = $_POST['dept_number'];
 
-// 평가 데이터 삭제
-$sql = "DELETE FROM Evaluation WHERE emp_no = ? AND year = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("ii", $emp_no, $year);
+// 부서 정보 삭제
+$sql = "DELETE FROM Department WHERE dept_number='$dept_number'";
 
-if ($stmt->execute()) {
-    echo "Evaluation record deleted successfully";
+if ($conn->query($sql) === TRUE) {
+    echo "Department record deleted successfully";
 } else {
-    echo "Error deleting record: " . $conn->error;
+    echo "Error: " . $sql . "<br>" . $conn->error;
 }
 
 // 연결 종료
-$stmt->close();
 $conn->close();
 ?>
