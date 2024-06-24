@@ -21,9 +21,7 @@
         <div class="button-container">
             <button type="button" onclick="openAddMemberForm()">새 구성원 추가</button>
         </div>
-        <div class="tohome">
-        	<a href="start.php">홈으로</a>
-        </div>
+       
         
     </div>
 
@@ -75,37 +73,58 @@
 
     <script>
     let members = [];
-        function displayMembers(filteredMembers) {
-            const memberList = document.getElementById("member-list");
-            memberList.innerHTML = "";
-            filteredMembers.forEach((member, index) => {
-                const memberItem = document.createElement("div");
-                memberItem.className = "member-item";
-                memberItem.innerHTML = `
-                    <div class="member-header">
-                        <h3>${member.name}</h3>
-                        
-                        <div class="menu">
-                            <span onclick="toggleMenu(${index})">...</span>
-                            <div class="dropdown-menu" id="menu-${index}">
-                                <button onclick="editMember(${index})">수정</button>
-                                <button onclick="deleteMember(${index})">삭제</button>
-                            </div>
-                        </div>
-                    </div>
-                    <p>고유번호: ${member.emp_no}</p>
-                    <p>생년월일: ${member.date_of_birth}</p>
-                    <p>합류날짜: ${member.date_of_joining}</p>
-                    <p>휴대폰 번호:</p>
-                    <ul>
-                        ${member.phones.map(phone => `<li>${phone}</li>`).join("")}
-                    </ul>
-                `;
-                memberList.appendChild(memberItem);
-            });
-        }
 
-        function searchMember() {
+function displayMembers(filteredMembers) {
+    const memberList = document.getElementById("member-list");
+    memberList.innerHTML = "";
+    filteredMembers.forEach((member, index) => {
+        const memberItem = document.createElement("div");
+        memberItem.className = "member-item";
+        memberItem.innerHTML = `
+            <div class="member-header">
+                <h3>${member.name}</h3>
+                <div class="menu">
+                    <span onclick="toggleMenu(${index})">...</span>
+                    <div class="dropdown-menu" id="menu-${index}">
+                        <button onclick="editMember(${index})">수정</button>
+                        <button onclick="deleteMember(${index})">삭제</button>
+                    </div>
+                </div>
+            </div>
+            <p>고유번호: ${member.emp_no}</p>
+            <p>생년월일: ${member.date_of_birth}</p>
+            <p>합류날짜: ${member.date_of_joining}</p>
+            <p>휴대폰 번호: ${member.phones.length}개 
+                <button onclick="showPhones(${index})">자세히 보기</button>
+            </p>
+            <ul id="phones-list-${index}" style="display: none;">
+                ${member.phones.map(phone => `<li>${phone}</li>`).join("")}
+            </ul>
+        `;
+        memberList.appendChild(memberItem);
+    });
+}
+
+function showPhones(index) {
+    const phonesList = document.getElementById(`phones-list-${index}`);
+    phonesList.style.display = phonesList.style.display === "none" ? "block" : "none";
+}
+
+function fetchMembers() {
+    $.ajax({
+        url: "fetch_members.php",
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            members = data;  // 데이터를 전역 변수에 할당합니다.
+            displayMembers(members);
+        },
+        error: function (error) {
+            console.log("Error fetching data:", error);
+        },
+    });
+}
+ function searchMember() {
             const searchTerm = document.getElementById("search").value.toLowerCase();
             const filteredMembers = members.filter((member) =>
                 member.name.toLowerCase().includes(searchTerm)
@@ -113,9 +132,10 @@
             displayMembers(filteredMembers);
         }
 
-        window.onload = () => {
-            fetchMembers();
-        };
+window.onload = () => {
+    fetchMembers();
+};
+
 
         function fetchMembers() {
     $.ajax({

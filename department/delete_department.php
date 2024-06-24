@@ -1,28 +1,29 @@
 <?php
-// 데이터베이스 연결 설정
-$host = "localhost";
-$db_id = "db2022320094"; // 데이터베이스 사용자 아이디
-$db_password = "secret"; // 데이터베이스 사용자 비밀번호
-$db_name = "db2022320094"; // 데이터베이스 이름
+include "../config.php";
 
-// MySQLi 연결
-$conn = new mysqli($host, $db_id, $db_password, $db_name);
-
-// 연결 확인
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 // 폼 데이터 받기
 $dept_number = $_POST['dept_number'];
 
-// 부서 정보 삭제
-$sql = "DELETE FROM Department WHERE dept_number='$dept_number'";
+// 트랜잭션 시작
+$conn->begin_transaction();
 
-if ($conn->query($sql) === TRUE) {
-    echo "Department record deleted successfully";
-} else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
+try {
+    // 부서 정보 삭제
+    $sql = "DELETE FROM Department WHERE dept_number='$dept_number'";
+    if ($conn->query($sql) === TRUE) {
+        // 트랜잭션 커밋
+        $conn->commit();
+        echo "Department record deleted successfully";
+    } else {
+        // 트랜잭션 롤백
+        $conn->rollback();
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+} catch (Exception $e) {
+    // 트랜잭션 롤백
+    $conn->rollback();
+    echo "Transaction failed: " . $e->getMessage();
 }
 
 // 연결 종료

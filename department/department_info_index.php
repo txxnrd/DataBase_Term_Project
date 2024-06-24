@@ -168,6 +168,7 @@
                 },
                 success: function(response) {
                     alert(response);
+                    departments[index].dept_number = dept_number;
                     departments[index].dept_name = dept_name;
                     departments[index].dept_head = dept_head;
                     departments[index].dept_established_date = dept_established_date;
